@@ -41,7 +41,11 @@
 #include "pfc_init.h"
 #include "scif.h"
 #include "rcar_version.h"
-#include "../ddr/boot_init_dram.h"
+#if RCAR_LSI == RCAR_V3H
+#include "../ddr/V3H/boot_init_dram.h"
+#elif RCAR_LSI == RCAR_V3M
+#include "../ddr/V3M/boot_init_dram.h"
+#endif
 #include "../qos/qos_init.h"
 
 extern char _binary_cr7_tcm_loader_bin_start[];
@@ -63,6 +67,7 @@ extern char _binary_cr7_tcm_loader_bin_size[];
 #define PRR_MAJOR_OFFSET	(1U)
 #define PRR_PRODUCT_H3		(0x00004F00U)		/* R-Car H3 */
 #define PRR_PRODUCT_M3		(0x00005200U)		/* R-Car M3 */
+#define PRR_PRODUCT_V3M		(0x00005400U)		/* R-Car V3M */
 #define PRR_PRODUCT_V3H		(0x00005600U)		/* R-Car V3H */
 #define PRR_PRODUCT_H3_ES_1_0	(0x00004F00U)		/* R-Car H3 ES1.0 */
 
@@ -72,6 +77,8 @@ typedef uint32_t(*ROM_GETLCS_API)(uint32_t *pLcs);
 #define ROM_GETLCS_API_ADDR	((ROM_GETLCS_API)0xEB1021B4U)
 #elif RCAR_LSI == RCAR_M3
 #define ROM_GETLCS_API_ADDR	((ROM_GETLCS_API)0xEB10415CU)
+#elif RCAR_LSI == RCAR_V3M
+#define ROM_GETLCS_API_ADDR	((ROM_GETLCS_API)0xEB10404CU)
 #elif RCAR_LSI == RCAR_V3H
 #define ROM_GETLCS_API_ADDR	((ROM_GETLCS_API)0xEB101940U)
 #endif
@@ -88,6 +95,9 @@ typedef uint32_t(*ROM_GETLCS_API)(uint32_t *pLcs);
 #elif RCAR_LSI == RCAR_M3
 #define TARGET_PRODUCT		RCAR_PRODUCT_M3
 #define TARGET_NAME		"R-Car M3"
+#elif RCAR_LSI == RCAR_V3M
+#define TARGET_PRODUCT		RCAR_PRODUCT_V3M
+#define TARGET_NAME		"R-Car V3M"
 #elif RCAR_LSI == RCAR_V3H
 #define TARGET_PRODUCT		RCAR_PRODUCT_V3H
 #define TARGET_NAME		"R-Car V3H"
@@ -109,6 +119,7 @@ uint32_t loader_main(void)
 	const char *str;
 	const char *product_h3      = "H3";
 	const char *product_m3      = "M3";
+	const char *product_v3m     = "V3M";
 	const char *product_v3h     = "V3H";
 	const char *unknown         = "unknown";
 #if 0
@@ -138,6 +149,9 @@ uint32_t loader_main(void)
 		break;
 	case PRR_PRODUCT_M3:
 		str = product_m3;
+		break;
+	case PRR_PRODUCT_V3M:
+		str = product_v3m;
 		break;
 	case PRR_PRODUCT_V3H:
 		str = product_v3h;

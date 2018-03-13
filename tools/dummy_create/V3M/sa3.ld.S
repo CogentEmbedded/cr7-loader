@@ -28,22 +28,18 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-#include <stdint.h>
-#include "pfc_init.h"
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-  #include "V3M/pfc_init_v3m.h"
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-  #include "V3H/pfc_init_v3h.h"
-#endif
-
-void pfc_init(void)
+SECTIONS
 {
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-	pfc_init_v3m();
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-	pfc_init_v3h();
-#endif
+	. = 0x00000000;
+	.rodata : {
+		. = 0x00000154;
+		KEEP(*(.sa3_rots_addr))
+		. = 0x00000264;
+		KEEP(*(.sa3_rtos_size))
+		. = 0x00000554;
+		KEEP(*(.sa3_bl2loader_addr))
+		. = 0x00000664;
+		KEEP(*(.sa3_bl2loader_size))
+	}
+
 }

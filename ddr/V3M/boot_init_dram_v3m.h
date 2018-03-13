@@ -29,21 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdint.h>
-#include "pfc_init.h"
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-  #include "V3M/pfc_init_v3m.h"
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-  #include "V3H/pfc_init_v3h.h"
-#endif
+#ifndef	BOOT_INIT_DRAM_V3M__
+#define	BOOT_INIT_DRAM_V3M__
 
-void pfc_init(void)
-{
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-	pfc_init_v3m();
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-	pfc_init_v3h();
-#endif
-}
+extern void init_ddr_v3m1600(void);
+
+#endif /* BOOT_INIT_DRAM_V3M__ */

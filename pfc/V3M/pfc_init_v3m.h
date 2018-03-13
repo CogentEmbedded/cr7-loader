@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Renesas Electronics Corporation
+ * Copyright (c) 2015-2017, Renesas Electronics Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,21 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdint.h>
-#include "pfc_init.h"
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-  #include "V3M/pfc_init_v3m.h"
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-  #include "V3H/pfc_init_v3h.h"
-#endif
+#ifndef PFC_INIT_V3M_H__
+#define PFC_INIT_V3M_H__
 
-void pfc_init(void)
-{
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-	pfc_init_v3m();
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-	pfc_init_v3h();
-#endif
-}
+void pfc_init_v3m(void);
+
+#endif	/* PFC_INIT_V3M_H__ */

@@ -35,14 +35,26 @@ OBJ_FILE	=	common/mem.o			\
 			loader/ipmmu.o \
 			common/micro_wait.o
 
-OBJ_FILE_SA0	=	tools/dummy_create/sa0.o
-OBJ_FILE_SA3	=	tools/dummy_create/sa3.o
-
+ifeq (${LSI},V3M)
+OBJ_FILE_SA0	=	tools/dummy_create/V3M/sa0.o
+OBJ_FILE_SA3	=	tools/dummy_create/V3M/sa3.o
+endif
+ifeq (${LSI},V3H)
+OBJ_FILE_SA0	=	tools/dummy_create/V3H/sa0.o
+OBJ_FILE_SA3	=	tools/dummy_create/V3H/sa3.o
+endif
 
 #linker script name
-MEMORY_DEF	=	loader/loader.ld.S
-MEMORY_DEF_SA0	=	tools/dummy_create/sa0.ld.S
-MEMORY_DEF_SA3	=	tools/dummy_create/sa3.ld.S
+ifeq (${LSI},V3M)
+MEMORY_DEF	=	loader/V3M/loader.ld.S
+MEMORY_DEF_SA0	=	tools/dummy_create/V3M/sa0.ld.S
+MEMORY_DEF_SA3	=	tools/dummy_create/V3M/sa3.ld.S
+endif
+ifeq (${LSI},V3H)
+MEMORY_DEF	=	loader/V3H/loader.ld.S
+MEMORY_DEF_SA0	=	tools/dummy_create/V3H/sa0.ld.S
+MEMORY_DEF_SA3	=	tools/dummy_create/V3H/sa3.ld.S
+endif
 
 ###################################################
 
@@ -53,6 +65,7 @@ DEBUG:=0
 RCAR_H3:=0
 RCAR_M3:=1
 RCAR_V3M:=2
+$(eval $(call add_define,RCAR_V3M))
 RCAR_V3H:=3
 $(eval $(call add_define,RCAR_V3H))
 RCAR_CUT_10:=0
@@ -65,6 +78,8 @@ ifndef LSI
 else
   ifeq (${LSI},V3H)
     RCAR_LSI:=${RCAR_V3H}
+  else ifeq (${LSI},V3M)
+    RCAR_LSI:=${RCAR_V3M}
   else
     $(error "Error: ${LSI} is not supported.")
   endif
@@ -189,8 +204,13 @@ $(OUTPUT_FILE_SA0) : $(MEMORY_DEF_SA0) $(OBJ_FILE_SA0)
 	-o $(OUTPUT_FILE_SA0)			\
 	-Map $(FILE_NAME_SA0).map 		\
 
+ifeq (${LSI},V3H)
 	$(OC) -O srec --adjust-vma=0xEB220000 --srec-forceS3  $(OUTPUT_FILE_SA0) $(FILE_NAME_SA0).srec
 	$(OC) -O binary --adjust-vma=0xEB220000 --srec-forceS3  $(OUTPUT_FILE_SA0) $(FILE_NAME_SA0).bin
+else ifeq (${LSI},V3M)
+	$(OC) -O srec --adjust-vma=0xE6320000 --srec-forceS3  $(OUTPUT_FILE_SA0) $(FILE_NAME_SA0).srec
+	$(OC) -O binary --adjust-vma=0xE6320000 --srec-forceS3  $(OUTPUT_FILE_SA0) $(FILE_NAME_SA0).bin
+endif
 
 $(OUTPUT_FILE_SA3) : $(MEMORY_DEF_SA3) $(OBJ_FILE_SA3)
 	$(LD) $(OBJ_FILE_SA3)		 	\
@@ -198,8 +218,13 @@ $(OUTPUT_FILE_SA3) : $(MEMORY_DEF_SA3) $(OBJ_FILE_SA3)
 	-o $(OUTPUT_FILE_SA3)			\
 	-Map $(FILE_NAME_SA3).map 		\
 
+ifeq (${LSI},V3H)
 	$(OC) -O srec --adjust-vma=0xEB220000 --srec-forceS3  $(OUTPUT_FILE_SA3) $(FILE_NAME_SA3).srec
 	$(OC) -O binary --adjust-vma=0xEB220000 --srec-forceS3  $(OUTPUT_FILE_SA3) $(FILE_NAME_SA3).bin
+else ifeq (${LSI},V3M)
+	$(OC) -O srec --adjust-vma=0xE6320000 --srec-forceS3  $(OUTPUT_FILE_SA3) $(FILE_NAME_SA3).srec
+	$(OC) -O binary --adjust-vma=0xE6320000 --srec-forceS3  $(OUTPUT_FILE_SA3) $(FILE_NAME_SA3).bin
+endif
 
 ###################################################
 # Compile

@@ -41,8 +41,7 @@ typedef struct {
 static const reg_setting_t reg_setting_rt[] = {
 
 	/* CPG (REALTIME) registers */
-
-#if	(RCAR_LSI != RCAR_V3H)
+#if (RCAR_LSI != RCAR_V3H) && (RCAR_LSI != RCAR_V3M)
 	/* Realtime Module Stop Control Register 0 */
 	{RMSTPCR0,		0x00200000U},
 	/* Realtime Module Stop Control Register 1 */

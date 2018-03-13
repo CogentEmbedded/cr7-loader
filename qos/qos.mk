@@ -29,16 +29,11 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
-ifeq (${RCAR_LSI},${RCAR_AUTO})
-    OBJ_FILE += qos/V3H/qos_init_v3h_v10.o
-else ifdef RCAR_LSI_CUT_COMPAT
-  ifeq (${RCAR_LSI},${RCAR_V3H})
-    OBJ_FILE += qos/V3H/qos_init_v3h_v10.o
-  endif
-else
-  ifeq (${RCAR_LSI},${RCAR_V3H})
-      OBJ_FILE += qos/V3H/qos_init_v3h_v10.o
-  endif
+ifeq (${RCAR_LSI},${RCAR_V3M})
+  OBJ_FILE += qos/V3M/qos_init_v3m.o
+endif
+ifeq (${RCAR_LSI},${RCAR_V3H})
+  OBJ_FILE += qos/V3H/qos_init_v3h_v10.o
 endif
 
 OBJ_FILE += qos/qos_init.o

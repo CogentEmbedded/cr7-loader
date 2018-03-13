@@ -28,22 +28,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+/* SA0 */
+/* 0x00000000 */
+const unsigned int __attribute__ ((section (".sa0_bootrom"))) bootrom_paramA = 0x00000100;
+/* 0x00000C00 */
+/* 0x00000D54 */
+const unsigned int __attribute__ ((section (".sa0_cert_addr"))) cert_addr = 0xE6304000;
+/* 0x00000E64 */
+const unsigned int __attribute__ ((section (".sa0_cert_size"))) cert_size = 0x00008000;
 
-#include <stdint.h>
-#include "pfc_init.h"
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-  #include "V3M/pfc_init_v3m.h"
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-  #include "V3H/pfc_init_v3h.h"
-#endif
-
-void pfc_init(void)
-{
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-	pfc_init_v3m();
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-	pfc_init_v3h();
-#endif
-}

@@ -56,7 +56,7 @@
 #define	CPG_RMSTPCR2	(0x0118)
 
 /* SCIF_BASE */
-#if RCAR_LSI == RCAR_V3H	/* V3H */
+#if RCAR_LSI == RCAR_V3M || RCAR_LSI == RCAR_V3H
 #define	SCIF_BASE		(0xE6E60000)	/* SCIF-0 base address */
 #else
 #define	SCIF_BASE		(0xE6E88000)	/* SCIF-2 base address */
@@ -160,7 +160,7 @@
 console_init:
 	ldr	r0, =CPG_BASE
 
-#if RCAR_LSI ==  RCAR_V3H
+#if RCAR_LSI == RCAR_V3M || RCAR_LSI == RCAR_V3H
 	ldr	r1, [r0, #CPG_RMSTPCR2]
 	and	r1, r1, #~MSTP207		/* MSTP207=0 */
 	mvn	r2, r1

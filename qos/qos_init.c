@@ -36,6 +36,9 @@
 #if RCAR_LSI == RCAR_AUTO
   #include "V3H/qos_init_v3h_v10.h"
 #endif
+#if RCAR_LSI == RCAR_V3M	/* V3M */
+  #include "V3M/qos_init_v3m.h"
+#endif
 #if RCAR_LSI == RCAR_V3H	/* V3H */
   #include "V3H/qos_init_v3h_v10.h"
 #endif
@@ -44,6 +47,7 @@
 #define PRR			(0xFFF00044U)
 #define PRR_PRODUCT_MASK	(0x00007F00U)
 #define PRR_CUT_MASK		(0x000000FFU)
+#define PRR_PRODUCT_V3M		(0x00005400U)           /* R-Car V3M */
 #define PRR_PRODUCT_V3H		(0x00005600U)           /* R-Car V3H */
 #define PRR_PRODUCT_10		(0x00U)
 #define PRR_PRODUCT_11		(0x01U)
@@ -86,7 +90,12 @@ void qos_init(void)
 		break;
 	}
 #else
- #if RCAR_LSI == RCAR_V3H	/* V3H */
+ #if RCAR_LSI == RCAR_V3M	/* V3M */
+	if (PRR_PRODUCT_V3M != (reg & (PRR_PRODUCT_MASK))) {
+		PRR_PRODUCT_ERR(reg);
+	}
+	qos_init_v3m();
+ #elif RCAR_LSI == RCAR_V3H	/* V3H */
 	/* V3H Cut 10 */
 	if ((PRR_PRODUCT_V3H | PRR_PRODUCT_10)
 			!= (reg & (PRR_PRODUCT_MASK | PRR_CUT_MASK))) {

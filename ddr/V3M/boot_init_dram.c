@@ -28,22 +28,40 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 #include <stdint.h>
-#include "pfc_init.h"
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-  #include "V3M/pfc_init_v3m.h"
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-  #include "V3H/pfc_init_v3h.h"
-#endif
+#include <debug.h>
+#include <mmio.h>
+#include "boot_init_dram.h"
+#include "boot_init_dram_v3m.h"
 
-void pfc_init(void)
+ /* Product Register */
+#define PRR			(0xFFF00044U)
+#define PRR_PRODUCT_MASK	(0x00007F00U)
+#define PRR_CUT_MASK		(0x000000FFU)
+#define PRR_PRODUCT_V3M		(0x00005400U)
+#define PRR_PRODUCT_10		(0x00U)
+#define PRR_PRODUCT_20		(0x01U)
+
+#define PRR_PRODUCT_ERR(reg)	do{\
+				ERROR("LSI Product ID(PRR=0x%x) DDR "\
+				"initialize not supported.\n",reg);\
+				panic();\
+				}while(0)
+#define PRR_CUT_ERR(reg)	do{\
+				ERROR("LSI Cut ID(PRR=0x%x) DDR "\
+				"initialize not supported.\n",reg);\
+				panic();\
+				}while(0)
+
+void InitDram(void)
 {
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-	pfc_init_v3m();
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-	pfc_init_v3h();
-#endif
+	uint32_t reg;
+
+	reg = mmio_read_32(PRR);
+
+	if ((PRR_PRODUCT_V3M | PRR_PRODUCT_10)
+			!= (reg & (PRR_PRODUCT_MASK | PRR_CUT_MASK))) {
+//		PRR_PRODUCT_ERR(reg);
+	}
+	init_ddr_v3m1600();
 }

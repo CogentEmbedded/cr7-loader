@@ -29,5 +29,11 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
-OBJ_FILE += ddr/boot_init_dram.o
-OBJ_FILE += ddr/dram_sub_func.o
+ifeq (${RCAR_LSI},${RCAR_V3H})
+OBJ_FILE += ddr/V3H/boot_init_dram.o
+OBJ_FILE += ddr/V3H/dram_sub_func.o
+endif
+ifeq (${RCAR_LSI},${RCAR_V3M})
+OBJ_FILE += ddr/V3M/boot_init_dram.o
+OBJ_FILE += ddr/V3M/ddr_init_v3m.o
+endif

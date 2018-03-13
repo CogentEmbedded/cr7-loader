@@ -29,6 +29,9 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
+ifeq (${RCAR_LSI},${RCAR_V3M})
+    OBJ_FILE += pfc/V3M/pfc_init_v3m.o
+endif
 ifeq (${RCAR_LSI},${RCAR_V3H})
     OBJ_FILE += pfc/V3H/pfc_init_v3h.o
 endif

@@ -38,7 +38,11 @@
 #define MODE_SYS		(0x1F)
 
 #define	ARMREG_P_CR7SS		(0xE6271800)
+#if (RCAR_LSI == RCAR_V3M)
+#define	SYSRAM_BASE		(0xE6300000)
+#elif (RCAR_LSI == RCAR_V3H)
 #define	SYSRAM_BASE		(0xEB200000)
+#endif
 #define	SCU_BASE		(0xF0000000)
 
 #define	TCM_ENABLE		(0x00000001)
@@ -111,7 +115,7 @@
 
 #define REGION0_BASE		(0x00000000)
 #define REGION1_BASE		(0xE0000000)
-#define REGION2_BASE		(0xEB200000)
+#define REGION2_BASE		SYSRAM_BASE
 #define REGION3_BASE		(ITCM_BASE)
 #define REGION4_BASE		(0xEB100000)
 
@@ -243,7 +247,11 @@ Start:
 	/* System RAM/SDRAM ECC enable */
 	bl	ecc_init
 
+#if (RCAR_LSI == RCAR_V3M)
+	ldr	r2, =(0xe6303300)
+#elif (RCAR_LSI == RCAR_V3H)
 	ldr	r2, =(0xEB203300)
+#endif
 	mov	r0, #0
 	mov	r1, R0
 	strd	r0, r1, [r2], #8

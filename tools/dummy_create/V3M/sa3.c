@@ -28,22 +28,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+/* SA3 */
+/* 0x000C0154 */
+const unsigned int __attribute__ ((section (".sa3_rots_addr"))) rtos_addr = 0x480A0800;
+/* 0x000C0264 */
+const unsigned int __attribute__ ((section (".sa3_rtos_size"))) rtos_size = 0x00008000;
+/* 0x000C0554 */
+const unsigned int __attribute__ ((section (".sa3_bl2loader_addr"))) bl2loader_addr = 0xe6344000;
+/* 0x000C0664 */
+const unsigned int __attribute__ ((section (".sa3_bl2loader_size"))) bl2loader_size = 0x00008000;
 
-#include <stdint.h>
-#include "pfc_init.h"
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-  #include "V3M/pfc_init_v3m.h"
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-  #include "V3H/pfc_init_v3h.h"
-#endif
-
-void pfc_init(void)
-{
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-	pfc_init_v3m();
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-	pfc_init_v3h();
-#endif
-}

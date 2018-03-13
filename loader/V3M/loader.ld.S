@@ -16,7 +16,7 @@
  *     used to endorse or promote products derived from this software without
  *     specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
@@ -29,21 +29,66 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdint.h>
-#include "pfc_init.h"
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-  #include "V3M/pfc_init_v3m.h"
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-  #include "V3H/pfc_init_v3h.h"
-#endif
 
-void pfc_init(void)
+OUTPUT_FORMAT("elf32-littlearm")
+OUTPUT_ARCH(arm)
+ENTRY(Vector)
+
+MEMORY {
+    RAM (rwx): ORIGIN = 0xE6304000, LENGTH = 0x0002C800
+}
+
+
+SECTIONS
 {
-#if RCAR_LSI == RCAR_V3M	/* V3M */
-	pfc_init_v3m();
-#endif
-#if RCAR_LSI == RCAR_V3H	/* V3H */
-	pfc_init_v3h();
-#endif
+    . = 0xE6304000;
+    ASSERT(. == ALIGN(4096),
+           "CR7 Loader address is not aligned on a page boundary.")
+
+    ro . : {
+        __RO_START__ = .;
+        *loader.o(.text*)
+        . = NEXT(1024);
+	*rcar_version.o(.version*)
+        *(.text*)
+        *(.rodata*)
+        *(.vectors)
+        __RO_END_UNALIGNED__ = .;
+        /*
+         * Memory page(s) mapped to this section will be marked as
+         * read-only, executable.  No RW data from the next section must
+         * creep in.  Ensure the rest of the current memory page is unused.
+         */
+        . = NEXT(4096);
+        __RO_END__ = .;
+    } >RAM
+
+    .data . : {
+        __DATA_START__ = .;
+        *(.data*)
+        __DATA_END__ = .;
+    } >RAM
+
+    stacks (NOLOAD) : {
+        __STACKS_START__ = .;
+        *(tzfw_normal_stacks)
+        __STACKS_END__ = .;
+    } >RAM
+
+    /*
+     * The .bss section gets initialised to 0 at runtime.
+     * Its base address must be 16-byte aligned.
+     */
+    .bss : ALIGN(16) {
+        __BSS_START__ = .;
+        *(SORT_BY_ALIGNMENT(.bss*))
+        *(COMMON)
+        __BSS_END__ = .;
+    } >RAM
+
+    __BL2_END__ = .;
+
+    __BSS_SIZE__ = SIZEOF(.bss);
+
+    ASSERT(. <= 0xe6330800, "CR7 Loader image has exceeded its limit.")
 }
