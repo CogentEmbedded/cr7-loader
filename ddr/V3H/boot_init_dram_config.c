@@ -1009,6 +1009,7 @@ static const struct _boardcnf boardcnfs[BOARDNUM] = {
 void boardcnf_get_brd_clk(uint32_t brd, uint32_t *clk, uint32_t *div) {
 	uint32_t md;
 	md = (mmio_read_32(RST_MODEMR)>>13)&0x3;
+md = 0;
 	switch(md){
 		case 0x0 : *clk = 50; *div = 3; break;
 		case 0x1 : *clk = 60; *div = 3; break;
@@ -1034,6 +1035,7 @@ void boardcnf_get_ddr_mbps(uint32_t brd, uint32_t *mbps, uint32_t *div) {
 	uint32_t md;
 	md = (mmio_read_32(RST_MODEMR)>>17) & 0x5;
 	md = (md|(md>>1))&0x3;
+md = 0;
 	switch(md){
 		case 0x0 : *mbps = 3200; *div = 1; break;
 		case 0x1 : *mbps = 2800; *div = 1; break;
