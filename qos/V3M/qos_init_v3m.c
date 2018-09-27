@@ -267,6 +267,7 @@ static const mstat_slot_t mstat_be[] = {
 };
 #endif
 
+#if !(RCAR_QOS_TYPE == RCAR_QOS_NONE)
 static void dbsc_setting(void)
 {
 
@@ -351,17 +352,16 @@ static void dbsc_setting(void)
 	io_write_32(DBSC_DBSCHQOS_15_2, 0x000005D0);
 	io_write_32(DBSC_DBSCHQOS_15_3, 0x000003D0);
 }
+#endif
 
 void qos_init_v3m(void)
 {
-
-	dbsc_setting();
-
 #if !(RCAR_QOS_TYPE == RCAR_QOS_NONE)
 #if RCAR_QOS_TYPE  == RCAR_QOS_TYPE_DEFAULT
 	NOTICE("BL2: QoS is default setting(%s)\n", RCAR_QOS_VERSION);
 #endif
-	
+	dbsc_setting();
+
 	/* Resource Alloc setting */
 	io_write_32(RALLOC_RAS,   0x00000020U);
 	io_write_32(RALLOC_FIXTH, 0x000F0005U);
@@ -403,11 +403,7 @@ void qos_init_v3m(void)
 
 	/* MSTAT start */
 	io_write_32(MSTAT_STATQC, 0x00000001U);
-
 #else
 	NOTICE("BL2: QoS is None\n");
-	/* Resource Alloc start */
-    io_write_32(RALLOC_RAEN,  0x00000001U);
-
 #endif /* !(RCAR_QOS_TYPE == RCAR_QOS_NONE) */
 }
