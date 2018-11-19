@@ -96,9 +96,7 @@ void qos_init(void)
 	}
 	qos_init_v3m();
  #elif RCAR_LSI == RCAR_V3H	/* V3H */
-	/* V3H Cut 10 */
-	if ((PRR_PRODUCT_V3H | PRR_PRODUCT_10)
-			!= (reg & (PRR_PRODUCT_MASK | PRR_CUT_MASK))) {
+	if (PRR_PRODUCT_V3H != (reg & (PRR_PRODUCT_MASK))) {
 		PRR_PRODUCT_ERR(reg);
 	}
 	qos_init_v3h_v10();
