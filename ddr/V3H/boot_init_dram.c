@@ -243,14 +243,14 @@ static inline void ddrphy_regif_idle();
 static uint16_t _f_scale(uint32_t ddr_mbps, uint32_t ddr_mbpsdiv, uint32_t ps, uint16_t cyc);
 static void _f_scale_js2(uint32_t ddr_mbps, uint32_t ddr_mbpsdiv, uint16_t *js2);
 static int16_t _f_scale_adj(int16_t ps);
-static void ddrtbl_load(void);
+__attribute__ ((noinline)) static void ddrtbl_load(void);
 static void ddr_config_sub(void);
 static void get_ca_swizzle( uint32_t ch, uint32_t ddr_csn, uint32_t *p_swz);
 static void ddr_config_sub_h3v1x(void);
-static void ddr_config(void);
-static void dbsc_regset(void);
+__attribute__ ((noinline)) static void ddr_config(void);
+__attribute__ ((noinline)) static void dbsc_regset(void);
 static void dbsc_regset_post(void);
-static uint32_t dfi_init_start(void);
+__attribute__ ((noinline)) static uint32_t dfi_init_start(void);
 static void change_lpddr4_en(uint32_t mode);
 static uint32_t set_term_code(void) ;
 static void ddr_register_set(uint32_t ch);
@@ -260,16 +260,16 @@ static inline void set_dfifrequency(uint32_t freq);
 static uint32_t pll3_freq(uint32_t on);
 static void update_dly(void);
 static uint32_t pi_training_go(void);
-static uint32_t init_ddr(void);
+__attribute__ ((noinline)) static uint32_t init_ddr(void);
 static uint32_t swlvl1(uint32_t ddr_csn, uint32_t reg_cs, uint32_t reg_kick);
 static void wdqdm_clr1(uint32_t ch, uint32_t ddr_csn);
 static uint32_t wdqdm_ana1(uint32_t ch, uint32_t ddr_csn);
 static uint32_t wdqdm_man1(void);
-static uint32_t wdqdm_man(void);
+__attribute__ ((noinline)) static uint32_t wdqdm_man(void);
 static void rdqdm_clr1(uint32_t ch, uint32_t ddr_csn);
 static uint32_t rdqdm_ana1(uint32_t ch, uint32_t ddr_csn);
 static uint32_t rdqdm_man1(void);
-static uint32_t rdqdm_man(void);
+__attribute__ ((noinline)) static uint32_t rdqdm_man(void);
 
 static int32_t _find_change(uint64_t val, uint32_t dir);
 static uint32_t _rx_offset_cal_updn(uint32_t code);
@@ -1711,7 +1711,7 @@ static void ddr_config(void)
 /*******************************************************************************
  *	DBSC register setting functions
  ******************************************************************************/
-static void dbsc_regset_pre(void)
+__attribute__ ((noinline)) static void dbsc_regset_pre(void)
 {
 	uint32_t ch, csab;
 	uint32_t dataL;
