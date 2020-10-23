@@ -285,7 +285,7 @@ struct DdrtData {
 };
 struct DdrtData tcal;
 
-static void pvtcode_update(void);
+__attribute__ ((noinline)) static void pvtcode_update(void);
 static void pvtcode_update2(void);
 static void ddr_padcal_tcompensate_getinit(uint32_t override);
 
@@ -3015,6 +3015,9 @@ err_exit:
 		dataL &= ~(0x00ffU<<16);
 		mmio_write_32(DBSC_DBDFICNT(ch), dataL);
 		ddr_setval(ch, _reg_PI_WDQLVL_RESP_MASK, 0);
+	}
+	if (err) {
+		NOTICE("Fail: %s:%d:%s\n",__func__, __LINE__, __DATE__);
 	}
 	return (err_flg|err);
 }

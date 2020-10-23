@@ -80,6 +80,7 @@ SECTIONS
         . = ALIGN(0x1000);
         *(.text.change_lpddr4_en)
         *(.text.unlikely.swlvl1)
+        *(.text.unlikely.pvtcode_update)
         *(.text.ddr_getval_ach_as)
         *(.text.rx_offset_cal)
         *(.text.unlikely.wdqdm_man1)
@@ -97,7 +98,7 @@ SECTIONS
         . = ALIGN(0x1000);
         *(.text.ddr_config)
         . = ALIGN(0x1000);
-        *(.text.unlikely.wdqdm_man)
+        *(.text.wdqdm_man)
         *(.text.unlikely.rdqdm_man)
         . = ALIGN(0x1000);
         *(.text.init_ddr)
