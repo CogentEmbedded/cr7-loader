@@ -35,10 +35,12 @@ const unsigned int __attribute__ ((section (".sa3_rots_addr"))) rtos_addr = 0x48
 /* 0x000C0264 */
 const unsigned int __attribute__ ((section (".sa3_rtos_size"))) rtos_size = 0x00008000;
 /* 0x000C0554 */
-#if 0
+#if defined(V3HBL2_DRAM)
+const unsigned int __attribute__ ((section (".sa3_bl2loader_addr"))) bl2loader_addr = 0x46000000;
+#elif defined(V3HBL2_RTSRAM)
 const unsigned int __attribute__ ((section (".sa3_bl2loader_addr"))) bl2loader_addr = 0xeb244000;
 #else
-const unsigned int __attribute__ ((section (".sa3_bl2loader_addr"))) bl2loader_addr = 0x46000000;
+const unsigned int __attribute__ ((section (".sa3_bl2loader_addr"))) bl2loader_addr = 0xe6304000;
 #endif
 /* 0x000C0664 */
 const unsigned int __attribute__ ((section (".sa3_bl2loader_size"))) bl2loader_size = 0x00008000;
