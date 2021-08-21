@@ -163,7 +163,7 @@ OD			= ${CROSS_COMPILE}objdump
 ASFLAGS		+=	-marm -march=armv7-r				\
 			-nostdinc -ffreestanding -Wa,--fatal-warnings	\
 			-Werror -Wmissing-include-dirs			\
-			 -c -D__ASSEMBLY				\
+			-c -D__ASSEMBLY -x assembler-with-cpp		\
 			$(INCLUDE_DIR) $(DEFINES)
 
 CFLAGS		+=	-marm -march=armv7-r				\
