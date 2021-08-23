@@ -59,7 +59,7 @@ endif
 ###################################################
 
 # Debug build
-DEBUG:=0
+DEBUG ?= 0
 
 # LSI setting common define
 RCAR_H3:=0
