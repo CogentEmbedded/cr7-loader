@@ -32,11 +32,11 @@
 #include "micro_wait.h"
 
 
-#define	CPG_BASE		(0xE6150000)
+#define CPG_BASE		(0xE6150000)
 #define CPG_SMSTPCR1		(0x0134)
 #define CPG_CPGWPR		(0x0900)
 
-#define MSTPCR1_TMU1		(1 << 24)
+#define MSTPCR1_TMU3		(1 << 22)
 
 #define TMU3_BASE		(0xE6FC0000)
 #define TMU_TSTR		(0x0004)
@@ -77,7 +77,7 @@ micro_wait_e:
 init_TMU3:
 	ldr	r0, =CPG_BASE
 	ldr	r1, [r0, #CPG_SMSTPCR1]
-	and	r1, r1, #~MSTPCR1_TMU1
+	and	r1, r1, #~MSTPCR1_TMU3
 	mvn	r2, r1
 	str	r2, [r0, #CPG_CPGWPR]
 	str	r1, [r0, #CPG_SMSTPCR1]
