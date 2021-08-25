@@ -298,7 +298,7 @@ Start:
 	mcr	p15, 0, r0, c7, c5, 6		/* BPIALL */
 	isb
 
-	/* Jump to RTOS */
+	/* Jump to RTOS the address is set */
 	pop	{r0, r1}
 	bx	r0				/* RTOS_BASE */
 	NOP

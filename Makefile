@@ -110,6 +110,12 @@ LOG_LEVEL	:=	20
 endif
 $(eval $(call add_define,LOG_LEVEL))
 
+# Process RTOS_ENABLE flag
+ifndef RTOS_ENABLE
+RTOS_ENABLE := 0
+endif
+$(eval $(call add_define,RTOS_ENABLE))
+
 # Process RCAR_SECURE_BOOT flag
 ifndef RCAR_SECURE_BOOT
 RCAR_SECURE_BOOT := 1

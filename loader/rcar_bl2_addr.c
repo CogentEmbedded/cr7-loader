@@ -151,6 +151,12 @@ uint32_t rcar_bl2_addr(uint32_t *main_cpu_addr)
 //	ipmmu_flush();
 	execDMA(SEC_BOOT_CERT_ADDR, FLASH_SEC_BOOT_CERT_ADDR, 1024U);
 
+#if RTOS_ENABLE == 0
+	rtos_load_addr = (uintptr_t)do_panic;
+
+	NOTICE("RTOS disabled\n");
+#else	/* RTOS_ENABLE == 0 */
+
 /*****************************************************************************
  *	Load CR7 RTOS certificate from HyperFlash
  *****************************************************************************/
@@ -195,6 +201,7 @@ uint32_t rcar_bl2_addr(uint32_t *main_cpu_addr)
 			INFO("RTOS image Verification sucess\n");
 		}
 	}
+#endif	/* RTOS_ENABLE == 0 */
 
 /*****************************************************************************
  *	Load CA57 Loader certificate from HyperFlash
