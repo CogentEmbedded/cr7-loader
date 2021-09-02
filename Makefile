@@ -32,7 +32,7 @@ OBJ_FILE	=	common/mem.o			\
 			loader/rcar_bl2_addr.o		\
 			loader/rcar_version.o		\
 			loader/bl2_cpg_init.o		\
-			loader/ipmmu.o \
+			loader/ipmmu.o			\
 			common/micro_wait.o
 
 ifeq (${LSI},V3M)
