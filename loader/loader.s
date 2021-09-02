@@ -276,7 +276,7 @@ Start:
 	mov	r0, r1
 	push	{r0, r1}			/* r0 = CA5x boot address */
 
-	/* serial outpu wait */
+	/* serial output wait */
 	bl	console_wait
 
 	/* CA53 bootup */
