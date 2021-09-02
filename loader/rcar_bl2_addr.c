@@ -117,7 +117,6 @@ uint32_t rcar_bl2_addr(uint32_t *main_cpu_addr)
  *	LCS judgement for secure boot
  *****************************************************************************/
 #if RCAR_SECURE_BOOT == 1
-1
 {
 	uint32_t lcs    = (mmio_read_32(LIFEC_CC_LCS) & 0x000000F0U) >> 4;
 	uint32_t md     = (mmio_read_32(RST_MODEMR)   & 0x00000020U) >> 5;
